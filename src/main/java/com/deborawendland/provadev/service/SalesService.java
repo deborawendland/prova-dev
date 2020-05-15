@@ -2,14 +2,7 @@ package com.deborawendland.provadev.service;
 
 import com.deborawendland.provadev.dao.DirectoryWatcherDAO;
 import com.deborawendland.provadev.dao.SalesDAO;
-import com.deborawendland.provadev.model.Client;
-import com.deborawendland.provadev.model.Sale;
-import com.deborawendland.provadev.model.Salesperson;
-import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
-@Service
 public class SalesService {
 
     private SalesDAO salesDAO;
@@ -26,7 +19,7 @@ public class SalesService {
         if (salesDAO.extractInitialFiles()){
             createReport();
             while (true){
-                if (salesDAO.extractSalesInformation(directoryWatcher.directoryWatcher().get())){
+                if (salesDAO.extractSalesInformation(directoryWatcher.directoryWatcher())){
                     createReport();
                 }
             }

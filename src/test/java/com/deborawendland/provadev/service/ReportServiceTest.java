@@ -28,7 +28,6 @@ public class ReportServiceTest {
 
     @Before
     public void init() {
-        //reportService = new ReportService();
         sales = new HashMap<>();
         List<SaleItem> saleItemsJohn = new ArrayList<>();
         saleItemsJohn.add(new SaleItem(1, 30, 5.00));

@@ -5,8 +5,13 @@ import com.deborawendland.provadev.dao.SalesDAO;
 import com.deborawendland.provadev.service.FileService;
 import com.deborawendland.provadev.service.ReportService;
 import com.deborawendland.provadev.service.SalesService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Configuration
 public class AppConfig {
@@ -23,7 +28,7 @@ public class AppConfig {
 
     @Bean
     public SalesDAO salesDAO(){
-        return new SalesDAO(salesDAOParse());
+        return new SalesDAO(salesDAOParse(), getHomepath(), getDataInPath());
     }
 
     @Bean
@@ -33,7 +38,15 @@ public class AppConfig {
 
     @Bean
     public DirectoryWatcherDAO directoryWatcherDAO (){
-        return new DirectoryWatcherDAO();
+        return new DirectoryWatcherDAO(getDataInPath());
+    }
+
+    public Path getDataInPath() {
+        return Paths.get(getHomepath() + "/data/in");
+    }
+
+    public Path getHomepath(){
+        return Paths.get("/home/debs/Documents");
     }
 
 }
