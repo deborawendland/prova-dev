@@ -5,16 +5,22 @@ import com.deborawendland.provadev.dao.SalesDAO;
 import com.deborawendland.provadev.service.FileService;
 import com.deborawendland.provadev.service.ReportService;
 import com.deborawendland.provadev.service.SalesService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 
+import javax.annotation.Resource;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Configuration
+@PropertySource("classpath:application.properties")
 public class AppConfig {
+
+    @Resource
+    private Environment environment;
 
     @Bean
     public ReportService reportService(){
@@ -46,7 +52,7 @@ public class AppConfig {
     }
 
     public Path getHomepath(){
-        return Paths.get("/home/debs/Documents");
+        return Paths.get(environment.getProperty("homepath"));
     }
 
 }

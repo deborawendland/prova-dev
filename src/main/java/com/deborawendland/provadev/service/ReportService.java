@@ -30,14 +30,11 @@ public class ReportService {
 
     private String reportWorstSalesperson (Map<Double, Sale> sales) {
         Map<String, Double> salesBySalesPerson = new HashMap<>();
-       sales.forEach(
-                (id, sale) -> {
-                    double salePrice = sale.getSaleItems().stream().mapToDouble(saleItem -> saleItem.getItemQuantity() * saleItem.getItemPrice()).sum();
-                    salesBySalesPerson.put(sale.getSalesperson(), salesBySalesPerson.getOrDefault(sale.getSalesperson(), 0.0) + salePrice);
-                }
-        );
+        sales.forEach(
+            (id, sale) -> {
+                double salePrice = sale.getSaleItems().stream().mapToDouble(saleItem -> saleItem.getItemQuantity() * saleItem.getItemPrice()).sum();
+                salesBySalesPerson.put(sale.getSalesperson(), salesBySalesPerson.getOrDefault(sale.getSalesperson(), 0.0) + salePrice);
+            });
         return Collections.min(salesBySalesPerson.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 }
-
-

@@ -8,7 +8,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class MyApplication {
 
     public static void main(String[] args) {
-
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
         SalesService salesService = (SalesService) applicationContext.getBean("salesService");
         salesService.getSalesInfo();

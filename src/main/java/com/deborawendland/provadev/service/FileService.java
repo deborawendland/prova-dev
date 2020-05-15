@@ -23,7 +23,6 @@ public class FileService {
     private String saleItemsArrayBeginsWith = "[";
     private String saleItemsArrayEndsWith = "]";
 
-
     public FileService() {
         clients = new HashMap<>();
         salespeople = new HashMap<>();
@@ -33,8 +32,10 @@ public class FileService {
     public void parseFile(List<String> file){
         logger.info("Parsing lines");
         List<String[]> linesParsedBySeparator = new ArrayList<>();
+
         file.stream().forEach(line -> {
             linesParsedBySeparator.add(line.split(dataColumnSeparator));});
+
         linesParsedBySeparator.stream().forEach(line -> {
             logger.info("Parsing line: " + line[0] + dataColumnSeparator + line[1] + dataColumnSeparator + line[2] + dataColumnSeparator + line[3]);
             if (validateSeparator(line, dataColumnCount, dataColumnSeparator)) {
@@ -65,6 +66,7 @@ public class FileService {
             case "003":
                 double saleID = Double.parseDouble(line[1]);
                 Optional<List<SaleItem>> saleItems =  parseSaleItems(line[2]);
+
                 if (saleItems.isPresent()){
                     logger.info("Creating a sale object.");
                     sales.put(saleID, new Sale(saleID, parseSaleItems(line[2]).get(), line[3]));
@@ -79,19 +81,23 @@ public class FileService {
 
     public Optional<List<SaleItem>> parseSaleItems (String itemsLine){
         logger.info("Parsing sale items: " + itemsLine);
+
         if (itemsLine.startsWith(saleItemsArrayBeginsWith) && itemsLine.endsWith(saleItemsArrayEndsWith)) {
             itemsLine = itemsLine.replace(saleItemsArrayBeginsWith, "");
             itemsLine = itemsLine.replace(saleItemsArrayEndsWith, "");
+
             List<String> saleItemsSeparated = Arrays.asList(itemsLine.split(saleItemsArraySeparator));
             List<String[]> saleItemsInfoSeparated = new ArrayList<>();
+
             saleItemsSeparated.stream().forEach(line -> {
                 saleItemsInfoSeparated.add(line.split(saleItemsInfoSeparator));
             });
+
             Optional<List<SaleItem>> saleItems = Optional.of(new ArrayList<>());
+
             saleItemsInfoSeparated.stream().forEach(line -> {if (validateSeparator(line, saleItemsInfoCount, saleItemsInfoSeparator))
                 {saleItems.get().add(new SaleItem(Double.parseDouble(line[0]), Integer.parseInt(line[1]), Double.parseDouble(line[2])));}});
             return saleItems;
-
         } else {
             logger.error("Error: Invalid sale item format. Expected: [item id-item quantity-item price,...]. Found: " + itemsLine);
             return Optional.empty();
